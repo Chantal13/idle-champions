@@ -22,7 +22,7 @@ const getDefinitions = async () => {
 
 const getUserDetails = async () => {
   const res = await fetch(
-    `https://ps22.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=547&user_id=${USER_ID}&hash=${USER_HASH}`
+    `https://ps21.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=549&user_id=${USER_ID}&hash=${USER_HASH}`
   );
 
   if (!res.ok) {
@@ -36,6 +36,17 @@ export const getHeroes = async (): Promise<Hero[]> => {
   const definitions = await getDefinitions();
   const userDetails = await getUserDetails();
 
+  const gameInstances = userDetails.details.game_instances.map(
+    // @ts-ignore
+    (formationData) => {
+      return {
+        customName: formationData.custom_name,
+        formation: formationData.formation,
+        gameInstanceID: formationData.game_instance_id,
+      };
+    }
+  );
+
   const parsedHeroes = definitions.hero_defines
     // @ts-ignore
     .filter((hero) => hero.is_available)
@@ -46,10 +57,17 @@ export const getHeroes = async (): Promise<Hero[]> => {
         return parseInt(hero.hero_id) === heroData.id;
       });
 
+      // @ts-ignore
+      const game_instance = gameInstances.find((instance) =>
+        // @ts-ignore
+        instance.formation.some((heroId) => heroId === heroData.id)
+      );
+
       return {
         id: heroData.id,
         name: heroData.name,
         seat_id: heroData.seat_id,
+        game_instance_id: game_instance?.gameInstanceID,
         graphic_id: heroData.graphic_id,
         portrait_graphic_id: heroData.portrait_graphic_id,
         character_sheet_details: {

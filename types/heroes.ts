@@ -1,7 +1,7 @@
 export interface Hero {
   id: number;
   name: string;
-  seat_id: number;
+  game_instance_id?: number;
   graphic_id: number;
   portrait_graphic_id: number;
   character_sheet_details: {
@@ -20,6 +20,7 @@ export interface Hero {
     };
   };
   owned: boolean;
+  seat_id: number;
   tags: string[];
 }
 
