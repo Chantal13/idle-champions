@@ -8,13 +8,30 @@ A small [Next.js](https://nextjs.org/) application that fetches hero data from t
    ```bash
    npm install
    ```
-2. (Optional) Update the `USER_ID` and `USER_HASH` constants in `utils/getHeroes.ts` with your own credentials.
-3. Run the development server
+2. Run the development server
    ```bash
    npm run dev
    ```
 
 Open <http://localhost:3000> in your browser to see the page.
+
+## Configuration
+
+Idle Champions credentials are loaded from environment variables.
+
+### Local setup
+
+Create a `.env` (or `.env.local`) file in the project root containing:
+
+```bash
+USER_ID=your-id
+USER_HASH=your-hash
+```
+
+### Vercel deployment
+
+In the Vercel dashboard, add `USER_ID` and `USER_HASH` as Environment Variables
+under **Project Settings**.
 
 ## Building for Production
 
