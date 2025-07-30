@@ -25,6 +25,14 @@
   min-height: 100vh;
 }
 
+.seat {
+  align-items: flex-start;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  justify-content: flex-start;
+}
+
 .seatNumber {
   font-size: 1.2rem;
   font-weight: 500;

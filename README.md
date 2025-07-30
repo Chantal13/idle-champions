@@ -1,6 +1,6 @@
 # Idle Champions Seat Viewer
 
-A small [Next.js](https://nextjs.org/) application that fetches hero data from the Idle Champions API and displays champions grouped by their seat. Heroes are colour coded based on whether you own them and if they are currently in a formation.
+A small [Next.js](https://nextjs.org/) application that fetches hero data from the Idle Champions API and displays champions grouped by their seat. Heroes are colour‐coded based on whether you own them and if they are currently in a formation.
 
 ## Getting Started
 
@@ -18,6 +18,13 @@ Open <http://localhost:3000> in your browser to see the page.
 ## Configuration
 
 Idle Champions credentials are loaded from environment variables.
+
+### Obtaining your credentials
+
+Launch the game and look for the authentication request to `authenticatesteamuser`.
+The JSON response includes `internal_user_id` and `hash` fields.
+Use the value from `internal_user_id` as `USER_ID` and the value from `hash`
+as `USER_HASH` when configuring the application.
 
 ### Local setup
 
