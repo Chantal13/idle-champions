@@ -39,27 +39,26 @@ export const getHeroes = async (): Promise<Hero[]> => {
     getUserDetails(),
   ]);
 
-  // Ensure both API calls returned the expected data structure
-  if (
-    !definitions ||
-    !definitions.hero_defines ||
-    !userDetails ||
-    !userDetails.details ||
-    !Array.isArray(userDetails.details.game_instances) ||
-    !Array.isArray(userDetails.details.heroes)
-  ) {
+  if (!definitions || !Array.isArray(definitions.hero_defines)) {
     return [];
   }
 
-  const gameInstances = userDetails.details.game_instances.map(
+  const userHeroes = Array.isArray(userDetails?.details?.heroes)
+    ? // @ts-ignore
+      userDetails!.details.heroes
+    : [];
+
+  const userGameInstances = Array.isArray(userDetails?.details?.game_instances)
+    ? userDetails!.details.game_instances
+    : [];
+
+  const gameInstances = userGameInstances.map(
     // @ts-ignore
-    (formationData) => {
-      return {
-        customName: formationData.custom_name,
-        formation: formationData.formation,
-        gameInstanceID: formationData.game_instance_id,
-      };
-    }
+    (formationData) => ({
+      customName: formationData.custom_name,
+      formation: formationData.formation,
+      gameInstanceID: formationData.game_instance_id,
+    })
   );
 
   const parsedHeroes = definitions.hero_defines
@@ -68,7 +67,7 @@ export const getHeroes = async (): Promise<Hero[]> => {
     // @ts-ignore
     .map((heroData) => {
       // @ts-ignore
-      const userHero = userDetails.details.heroes.find((hero) => {
+      const userHero = userHeroes.find((hero) => {
         return parseInt(hero.hero_id) === heroData.id;
       });
 
