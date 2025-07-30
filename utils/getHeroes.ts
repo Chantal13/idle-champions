@@ -28,6 +28,9 @@ const getDefinitions = async () => {
 };
 
 const getUserDetails = async () => {
+  if (!USER_ID || !USER_HASH) {
+    return null;
+  }
   return safeFetchJson(
     `https://ps21.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=549&user_id=${USER_ID}&hash=${USER_HASH}`
   );
@@ -39,10 +42,13 @@ export const getHeroes = async (): Promise<Hero[]> => {
     getUserDetails(),
   ]);
 
-  // Ensure both API calls returned the expected data structure
+  // Validate definitions payload
+  if (!definitions || !Array.isArray(definitions.hero_defines)) {
+    return [];
+  }
+
+  // Validate user details payload
   if (
-    !definitions ||
-    !definitions.hero_defines ||
     !userDetails ||
     !userDetails.details ||
     !Array.isArray(userDetails.details.game_instances) ||
@@ -51,7 +57,7 @@ export const getHeroes = async (): Promise<Hero[]> => {
     return [];
   }
 
-  const gameInstances = userDetails.details.game_instances.map(
+  const gameInstances = userDetails.details.game_instances?.map(
     // @ts-ignore
     (formationData) => {
       return {
@@ -60,7 +66,7 @@ export const getHeroes = async (): Promise<Hero[]> => {
         gameInstanceID: formationData.game_instance_id,
       };
     }
-  );
+  ) ?? [];
 
   const parsedHeroes = definitions.hero_defines
     // @ts-ignore
@@ -68,7 +74,7 @@ export const getHeroes = async (): Promise<Hero[]> => {
     // @ts-ignore
     .map((heroData) => {
       // @ts-ignore
-      const userHero = userDetails.details.heroes.find((hero) => {
+      const userHero = userDetails.details.heroes?.find((hero) => {
         return parseInt(hero.hero_id) === heroData.id;
       });
 
