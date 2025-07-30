@@ -8,7 +8,7 @@ A small [Next.js](https://nextjs.org/) application that fetches hero data from t
    ```bash
    npm install
    ```
-2. (Optional) Update the `USER_ID` and `USER_HASH` constants in `utils/getHeroes.ts` with your own credentials.
+2. Create a `.env.local` file and set `USER_ID` and `USER_HASH` to your credentials.
 3. Run the development server
    ```bash
    npm run dev
@@ -37,6 +37,11 @@ Run ESLint with:
 ```bash
 npm run lint
 ```
+
+## Deployment
+
+Deploy the app to Vercel and configure your custom domain, e.g.
+`idle-champions-ivory.vercel.app`, in the Vercel project settings.
 
 ## Notes
 
