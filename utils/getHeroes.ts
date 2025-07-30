@@ -2,6 +2,8 @@ import type { Hero, Seat } from "../types/heroes";
 
 const USER_ID = process.env.USER_ID ?? "";
 const USER_HASH = process.env.USER_HASH ?? "";
+// The API requires a high client version; use a large number to bypass checks.
+const MOBILE_CLIENT_VERSION = 999;
 
 // https://ps22.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=547&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4
 // https://ps22.idlechampions.com/~idledragons/post.php?call=getcampaigndetails&game_instance_id=1&instance_id=1&mobile_client_version=547&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4
@@ -10,7 +12,8 @@ const USER_HASH = process.env.USER_HASH ?? "";
 
 const safeFetchJson = async (url: string) => {
   try {
-    const res = await fetch(url);
+    // Disable Next.js fetch caching so data is retrieved at request time.
+    const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) {
       throw new Error(`Request failed with status ${res.status}`);
     }
@@ -29,7 +32,7 @@ const getDefinitions = async () => {
 
 const getUserDetails = async () => {
   return safeFetchJson(
-    `https://ps21.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=549&user_id=${USER_ID}&hash=${USER_HASH}`
+    `https://ps21.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=${MOBILE_CLIENT_VERSION}&user_id=${USER_ID}&hash=${USER_HASH}`
   );
 };
 
