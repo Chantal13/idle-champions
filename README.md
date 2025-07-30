@@ -34,3 +34,55 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+
+## Environment Variables
+
+Create a `.env.local` file based on `.env.example` and provide your `USER_ID` and `USER_HASH` values. These credentials are required for fetching Idle Champions data and should never be committed to version control.
+
+## Scripts
+
+Useful npm scripts are defined in `package.json`:
+
+```bash
+npm run lint        # Check code style with ESLint
+npm run type-check  # Run the TypeScript compiler in noEmit mode
+npm run build       # Create an optimized production build
+npm test            # Run project tests
+```
+
+## Data Structures
+
+Hero and seat data returned from the API follow these interfaces:
+
+```ts
+interface Hero {
+  id: number;
+  name: string;
+  game_instance_id?: number;
+  graphic_id: number;
+  portrait_graphic_id: number;
+  character_sheet_details: {
+    full_name: string;
+    class: string;
+    race: string;
+    age: number;
+    alignment: string;
+    ability_scores: {
+      str: number;
+      dex: number;
+      con: number;
+      int: number;
+      wis: number;
+      cha: number;
+    };
+  };
+  owned: boolean;
+  seat_id: number;
+  tags: string[];
+}
+
+interface Seat {
+  id: number;
+  heroes: Hero[];
+}
+```

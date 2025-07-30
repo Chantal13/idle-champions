@@ -1,12 +1,13 @@
 import type { Hero, Seat } from "../types/heroes";
 
-const USER_ID = 99543;
-const USER_HASH = "8843f90c49fe1d028ecd93c3a6f610f4";
+const USER_ID = process.env.USER_ID;
+const USER_HASH = process.env.USER_HASH;
 
-// https://ps22.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=547&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4
-// https://ps22.idlechampions.com/~idledragons/post.php?call=getcampaigndetails&game_instance_id=1&instance_id=1&mobile_client_version=547&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4
-// https://ps22.idlechampions.com/~idledragons/post.php?call=getallformationsaves&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4&instance_id=1391829696&mobile_client_version=547
-// https://ps21.idlechampions.com/~idledragons/post.php?call=getDefinitions
+if (!USER_ID || !USER_HASH) {
+  throw new Error("USER_ID and USER_HASH environment variables are required");
+}
+
+// API endpoints used to fetch hero and campaign data
 
 const getDefinitions = async () => {
   const res = await fetch(
