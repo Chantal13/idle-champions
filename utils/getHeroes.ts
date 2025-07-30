@@ -39,7 +39,15 @@ export const getHeroes = async (): Promise<Hero[]> => {
     getUserDetails(),
   ]);
 
-  if (!definitions || !userDetails) {
+  // Ensure both API calls returned the expected data structure
+  if (
+    !definitions ||
+    !definitions.hero_defines ||
+    !userDetails ||
+    !userDetails.details ||
+    !Array.isArray(userDetails.details.game_instances) ||
+    !Array.isArray(userDetails.details.heroes)
+  ) {
     return [];
   }
 
