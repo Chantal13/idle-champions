@@ -9,33 +9,40 @@ if (!USER_ID || !USER_HASH) {
 
 // API endpoints used to fetch hero and campaign data
 
+const safeFetchJson = async (url: string) => {
+  try {
+    const res = await fetch(url);
+    if (!res.ok) {
+      throw new Error(`Request failed with status ${res.status}`);
+    }
+    return (await res.json()) as any;
+  } catch (err) {
+    console.error(`Failed to fetch ${url}`, err);
+    return null;
+  }
+};
+
 const getDefinitions = async () => {
-  const res = await fetch(
+  return safeFetchJson(
     "https://ps21.idlechampions.com/~idledragons/post.php?call=getDefinitions"
   );
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch user details!");
-  }
-
-  return res.json();
 };
 
 const getUserDetails = async () => {
-  const res = await fetch(
+  return safeFetchJson(
     `https://ps21.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=549&user_id=${USER_ID}&hash=${USER_HASH}`
   );
-
-  if (!res.ok) {
-    throw new Error("Failed to fetch user details!");
-  }
-
-  return res.json();
 };
 
 export const getHeroes = async (): Promise<Hero[]> => {
-  const definitions = await getDefinitions();
-  const userDetails = await getUserDetails();
+  const [definitions, userDetails] = await Promise.all([
+    getDefinitions(),
+    getUserDetails(),
+  ]);
+
+  if (!definitions || !userDetails) {
+    return [];
+  }
 
   const gameInstances = userDetails.details.game_instances.map(
     // @ts-ignore
@@ -113,5 +120,5 @@ export const parseSeats = (heroesData: Hero[]): Seat[] => {
     return acc;
   }, []);
 
-  return seats;
+  return seats.sort((a, b) => a.id - b.id);
 };
