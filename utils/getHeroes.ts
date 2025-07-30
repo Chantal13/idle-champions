@@ -3,9 +3,9 @@ import type { Hero, Seat } from "../types/heroes";
 const USER_ID = process.env.USER_ID ?? "";
 const USER_HASH = process.env.USER_HASH ?? "";
 
-// https://ps22.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=549&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4
-// https://ps22.idlechampions.com/~idledragons/post.php?call=getcampaigndetails&game_instance_id=1&instance_id=1&mobile_client_version=549&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4
-// https://ps22.idlechampions.com/~idledragons/post.php?call=getallformationsaves&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4&instance_id=1391829696&mobile_client_version=549
+// https://ps22.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=547&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4
+// https://ps22.idlechampions.com/~idledragons/post.php?call=getcampaigndetails&game_instance_id=1&instance_id=1&mobile_client_version=547&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4
+// https://ps22.idlechampions.com/~idledragons/post.php?call=getallformationsaves&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4&instance_id=1391829696&mobile_client_version=547
 // https://ps21.idlechampions.com/~idledragons/post.php?call=getDefinitions
 
 const safeFetchJson = async (url: string) => {
@@ -28,9 +28,6 @@ const getDefinitions = async () => {
 };
 
 const getUserDetails = async () => {
-  if (!USER_ID || !USER_HASH) {
-    return null;
-  }
   return safeFetchJson(
     `https://ps21.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=549&user_id=${USER_ID}&hash=${USER_HASH}`
   );
@@ -42,31 +39,27 @@ export const getHeroes = async (): Promise<Hero[]> => {
     getUserDetails(),
   ]);
 
-  // Validate definitions payload
   if (!definitions || !Array.isArray(definitions.hero_defines)) {
     return [];
   }
 
-  // Validate user details payload
-  if (
-    !userDetails ||
-    !userDetails.details ||
-    !Array.isArray(userDetails.details.game_instances) ||
-    !Array.isArray(userDetails.details.heroes)
-  ) {
-    return [];
-  }
+  const userHeroes = Array.isArray(userDetails?.details?.heroes)
+    ? // @ts-ignore
+      userDetails!.details.heroes
+    : [];
 
-  const gameInstances = userDetails.details.game_instances?.map(
+  const userGameInstances = Array.isArray(userDetails?.details?.game_instances)
+    ? userDetails!.details.game_instances
+    : [];
+
+  const gameInstances = userGameInstances.map(
     // @ts-ignore
-    (formationData) => {
-      return {
-        customName: formationData.custom_name,
-        formation: formationData.formation,
-        gameInstanceID: formationData.game_instance_id,
-      };
-    }
-  ) ?? [];
+    (formationData) => ({
+      customName: formationData.custom_name,
+      formation: formationData.formation,
+      gameInstanceID: formationData.game_instance_id,
+    })
+  );
 
   const parsedHeroes = definitions.hero_defines
     // @ts-ignore
@@ -74,7 +67,7 @@ export const getHeroes = async (): Promise<Hero[]> => {
     // @ts-ignore
     .map((heroData) => {
       // @ts-ignore
-      const userHero = userDetails.details.heroes?.find((hero) => {
+      const userHero = userHeroes.find((hero) => {
         return parseInt(hero.hero_id) === heroData.id;
       });
 
