@@ -10,7 +10,8 @@ const USER_HASH = process.env.USER_HASH ?? "";
 
 const safeFetchJson = async (url: string) => {
   try {
-    const res = await fetch(url);
+    // Disable Next.js fetch caching so data is retrieved at request time.
+    const res = await fetch(url, { cache: "no-store" });
     if (!res.ok) {
       throw new Error(`Request failed with status ${res.status}`);
     }
