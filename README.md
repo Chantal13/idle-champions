@@ -8,26 +8,30 @@ A small [Next.js](https://nextjs.org/) application that fetches hero data from t
    ```bash
    npm install
    ```
-2. (Optional) Update the `USER_ID` and `USER_HASH` constants in `utils/getHeroes.ts` with your own credentials.
-3. Run the development server
+2. Run the development server
    ```bash
    npm run dev
    ```
 
 Open <http://localhost:3000> in your browser to see the page.
 
-## Usage
+## Configuration
 
-1. Obtain your Idle Champions `USER_ID` and `USER_HASH`. The easiest way is to inspect a network request to `getuserdetails` while the game is running and copy the values from the query string.
-2. Edit `utils/getHeroes.ts` and replace the `USER_ID` and `USER_HASH` constants with your values.
-3. Run `npm run dev` and open <http://localhost:3000>.
-4. The page displays every champion grouped by their seat.
-   - Owned champions appear with a dark border.
-   - Champions in a formation are highlighted in yellow.
-   - Unowned champions are greyed out.
-5. Scroll horizontally to browse all of the seats.
+Idle Champions credentials are loaded from environment variables.
 
+### Local setup
 
+Create a `.env` (or `.env.local`) file in the project root containing:
+
+```bash
+USER_ID=your-id
+USER_HASH=your-hash
+```
+
+### Vercel deployment
+
+In the Vercel dashboard, add `USER_ID` and `USER_HASH` as Environment Variables
+under **Project Settings**.
 
 ## Building for Production
 
