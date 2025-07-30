@@ -16,6 +16,19 @@ A small [Next.js](https://nextjs.org/) application that fetches hero data from t
 
 Open <http://localhost:3000> in your browser to see the page.
 
+## Usage
+
+1. Obtain your Idle Champions `USER_ID` and `USER_HASH`. The easiest way is to inspect a network request to `getuserdetails` while the game is running and copy the values from the query string.
+2. Edit `utils/getHeroes.ts` and replace the `USER_ID` and `USER_HASH` constants with your values.
+3. Run `npm run dev` and open <http://localhost:3000>.
+4. The page displays every champion grouped by their seat.
+   - Owned champions appear with a dark border.
+   - Champions in a formation are highlighted in yellow.
+   - Unowned champions are greyed out.
+5. Scroll horizontally to browse all of the seats.
+
+
+
 ## Building for Production
 
 Generate an optimized build with:
