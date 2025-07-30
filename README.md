@@ -38,6 +38,22 @@ Run ESLint with:
 npm run lint
 ```
 
+## Type Checking
+
+Verify TypeScript types using:
+
+```bash
+npm run type-check
+```
+
+## Testing
+
+Run project tests with:
+
+```bash
+npm test
+```
+
 ## Notes
 
 This project relies on the public Idle Champions endpoints and may break if those APIs change.
