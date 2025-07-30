@@ -43,13 +43,17 @@ export const getHeroes = async (): Promise<Hero[]> => {
     return [];
   }
 
+  if (!userDetails || typeof userDetails.details !== "object") {
+    return [];
+  }
+
   const userHeroes = Array.isArray(userDetails?.details?.heroes)
     ? // @ts-ignore
-      userDetails!.details.heroes
+      userDetails.details.heroes
     : [];
 
   const userGameInstances = Array.isArray(userDetails?.details?.game_instances)
-    ? userDetails!.details.game_instances
+    ? userDetails.details.game_instances
     : [];
 
   const gameInstances = userGameInstances.map(
