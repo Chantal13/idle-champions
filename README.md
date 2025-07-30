@@ -19,6 +19,13 @@ Open <http://localhost:3000> in your browser to see the page.
 
 Idle Champions credentials are loaded from environment variables.
 
+### Obtaining your credentials
+
+Launch the game and look for the authentication request to `authenticatesteamuser`.
+The JSON response includes `internal_user_id` and `hash` fields.
+Use the value from `internal_user_id` as `USER_ID` and the value from `hash`
+as `USER_HASH` when configuring the application.
+
 ### Local setup
 
 Create a `.env` (or `.env.local`) file in the project root containing:
