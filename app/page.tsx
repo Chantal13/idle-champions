@@ -1,5 +1,8 @@
 import { getHeroes, parseSeats } from "../utils/getHeroes";
 
+// Force dynamic rendering so data is fetched on every request.
+export const dynamic = "force-dynamic";
+
 import styles from "./page.module.css";
 
 // https://ps22.idlechampions.com/~idledragons/post.php?call=getuserdetails&instance_key=1&mobile_client_version=547&user_id=99543&hash=8843f90c49fe1d028ecd93c3a6f610f4
