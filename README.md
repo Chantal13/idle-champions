@@ -1,6 +1,6 @@
 # Idle Champions Seat Viewer
 
-A small [Next.js](https://nextjs.org/) application that fetches hero data from the Idle Champions API and displays champions grouped by their seat. Heroes are colour coded based on whether you own them and if they are currently in a formation.
+A small [Next.js](https://nextjs.org/) application that fetches hero data from the Idle Champions API and displays champions grouped by their seat. Heroes are colour‐coded based on whether you own them and if they are currently in a formation.
 
 ## Getting Started
 
